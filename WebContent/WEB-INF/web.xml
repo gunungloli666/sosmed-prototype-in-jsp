@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+  <display-name>SocialMedia</display-name>
+  <welcome-file-list>
+    <welcome-file>viewArticle</welcome-file>
+  </welcome-file-list>
+  
+  
+  <servlet>
+  	<servlet-name>viewArticle</servlet-name> 
+  	<servlet-class>media.sosial.bean.mapping.ViewArticleAction</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>updateArticle</servlet-name> 
+  	<servlet-class>media.sosial.bean.mapping.UpdateArticleAction</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>hapusArticle</servlet-name>
+  	<servlet-class>media.sosial.bean.mapping.HapusArticleAction</servlet-class>
+  </servlet>
+  
+  
+  <servlet-mapping>
+  	<servlet-name>viewArticle</servlet-name> 
+  	<url-pattern>/viewArticle</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>updateArticle</servlet-name> 
+  	<url-pattern>/updateArticle</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>hapusArticle</servlet-name> 
+  	<url-pattern>/hapusArticle</url-pattern>
+  </servlet-mapping>
+  
+  
+</web-app>
