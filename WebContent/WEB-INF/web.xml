@@ -21,6 +21,16 @@
   	<servlet-class>media.sosial.bean.mapping.HapusArticleAction</servlet-class>
   </servlet>
   
+  <servlet>
+  	<servlet-name>searchArticle</servlet-name>
+  	<servlet-class>media.sosial.bean.mapping.SearchArticleAction</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>cekPesan</servlet-name>
+  	<servlet-class>media.sosial.bean.mapping.CekPesanAction</servlet-class>
+  </servlet>
+  
   
   <servlet-mapping>
   	<servlet-name>viewArticle</servlet-name> 
@@ -35,6 +45,16 @@
   <servlet-mapping>
   	<servlet-name>hapusArticle</servlet-name> 
   	<url-pattern>/hapusArticle</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>searchArticle</servlet-name>
+  	<url-pattern>/searchArticle</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>cekPesan</servlet-name>
+  	<url-pattern>/cekPesan</url-pattern>
   </servlet-mapping>
   
   

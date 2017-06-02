@@ -12,6 +12,10 @@
 String path = request.getContextPath(); 
 %>
 <script type="text/javascript" src="<%=path%>/script/jquery-3.2.1.min.js" ></script>
+<script type="text/javascript" src="<%=path%>/script/jquery-ui.min.js" > </script>
+
+<link rel="stylesheet" href="<%=path%>/css/main.css" type="text/css" >
+
 <script type="text/javascript"> 
 $(document).ready(
   function(){
@@ -19,30 +23,32 @@ $(document).ready(
 		var status = $('#updateArea').val() ; 
 		var rgx = /\n/g;  
 		var sts = status.replace(rgx , "<br />" ); 
+		if( !sts){
+			return; 
+		}
 		$.ajax({
 			url : 'updateArticle', 
 			data : {content : status}, 
 			type: 'post' , 
 			cache : false , 
 			success : function( response){
-				$("#statusArea").prepend("<div style=\"width: 100%; background-color: #F8FAF6 ; float: left;  position: relative; top: 2px; border: 2px solid #DDE682; margin :2px;  \" id=\""
-					+response+"\"><div style=\"position: relative ; float :left ; width: 50%;  \" >"+sts+"</div>"+
-					"<div align=\"right\" style=\"position :relative; float: right; width: 50%;\"><button class=\"buttonHapus\" value=\""+
+				 $("#statusArea").prepend("<div  class=\"container-status\" id=\""
+					+response+"\"><div class=\"area-status\" >"+sts+"</div>"+
+					"<div align=\"right\" class=\"area-button-status\" ><button class=\"buttonHapus\" value=\""+
 					response+"\">HAPUS</button></div>" +
 					"</div>" );
 				 $("#updateArea").val("");
-				 
 				 $(".buttonHapus").click( function(){
-						var idx = $(this).val(); 
-						$.ajax({
-							url : 'hapusArticle', 
-							data : {idArticle : idx} ,
-							type : 'post', 
-							cache : false, 
-							success : function( response){
-								$("#" + idx ).remove(); 
-							}
-						}); 
+					var idx = $(this).val(); 
+					$.ajax({
+						url : 'hapusArticle', 
+						data : {idArticle : idx  } ,
+						type : 'post', 
+						cache : false, 
+						success : function( response){
+							$("#" + idx ).remove(); 
+						}
+					}); 
 				}); 
 			}	
 		}); 
@@ -61,28 +67,70 @@ $(document).ready(
 		}); 
 	}); 
 	
+	$("#autoComplete").on("change keyup paste" , function (){
+		var text = $(this).val(); 
+		$("#divAutocomplete").empty(); 
+		$.ajax({
+			url : 'searchArticle' , 
+			data : {keyword : text }, 
+			type : 'post', 
+			cache: false, 
+			success : function(respon){ 
+				var res = JSON.parse(respon); 
+				$.each(res , function(index, isi){
+					$("#divAutocomplete").prepend("<div style=\"margin-top: 2px; \" >"+
+					"<a href=\"#\" >"+isi.content+"</a></div>"); 
+				}); 
+			}
+		});
+	}); 
+	
+	// 	function cekPesan( ){
+	// 		$.ajax({
+	// 			url : 'cekPesan', 
+	// 			data : { user : 'fajar'},
+	// 			type : 'post', 
+	// 			cache: false, 
+	// 			success : function(respon){
+	// 				console.log(respon); 
+	// 				$("#kotakPesan").append("<div>"+respon+"</div>"); 
+	// 				cekPesan();  // recurse call after message received
+	// 				return; 
+	// 			}
+	// 		});
+	// 	}
+	// 	cekPesan(); 
+
 }); 
 </script>
 
 </head>
 <body>
 
-<span> 
-<b><a href="viewArticle" >Home</a></b>
-<b>
-<a href="">Profil</a>
-</b>
-</span>
 
 <%
+@SuppressWarnings("unchecked")
 List<Article> listArticle =(List<Article>)  request.getAttribute("listArticle" ) ; 
 %>
-<div style="width: 58% ; background-color: #E8D2E8; "> 
-	<div style="width: 100% ; background-color: #FBA1A6; "  >
+<div>
+
+	<div style="float: left ; width: 100%;">
+		<span> 
+		<b><a href="viewArticle" >Home</a></b>
+		<b>
+		<a href="">Profil</a>
+		</b>
+		</span>
+	</div>
+
+<div class="left-container" > 
+
+	<div class="area-input-status"   >
 		<textarea  style="width: 99%;" rows="5" cols="60" id="updateArea" ></textarea>
 	</div>
 	<div style="width: 50% ;"> 
 		<button id="updateButton" >UPDATE</button>
+		<button>FOTO</button>
 	</div>
 	
 	<div id="statusArea">
@@ -90,9 +138,9 @@ List<Article> listArticle =(List<Article>)  request.getAttribute("listArticle" )
 			for(int i= listArticle.size() - 1; i>=0 ; i-- ){
 				Article art = listArticle.get(i); 
 		%>
-		<div style="width: 100%; background-color: #F8FAF6 ;float: left; position: relative; top: 2px; border: 2px solid #DDE682; margin: 2px;  " id="<%=art.getTitle()%>">
-			<div style="position: relative ; float :left ; width: 50%;" ><%=art.getContent()%></div>
-			<div align="right" style="position :relative; float: right; width: 50%; ">
+		<div class="container-status"  id="<%=art.getTitle()%>" >
+			<div class="area-status" ><%=art.getContent()%></div>
+			<div align="right" class="area-button-status"  >
 				<button class="buttonHapus"  value="<%=art.getTitle()%>" >HAPUS</button>
 			</div>
 			
@@ -103,6 +151,19 @@ List<Article> listArticle =(List<Article>)  request.getAttribute("listArticle" )
 	</div>
 	
 	<div id="test" ></div>
+</div>
+
+<div class="right-container"  >
+	<input style="width:100" id="autoComplete" >
+	<div id="divAutocomplete" >
+	</div>
+		
+	<div id="kotakPesan"  style="position: absolute; top:  12em ">
+	<div>Daftar Pesan</div>
+	</div>
+</div>
+
+
 </div>
 
 </body>

@@ -18,7 +18,6 @@ public class ViewArticleAction  extends HttpServlet{
 		viewArticle = ViewArticle.getInstance(); 
 	}
 	
-	
 	public void doGet(HttpServletRequest request, HttpServletResponse response){
 		doPost(request, response); 
 	}
@@ -33,6 +32,4 @@ public class ViewArticleAction  extends HttpServlet{
 			System.out.println( "eror: " + e); 
 		}
 	}
-
-
 }

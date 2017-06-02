@@ -1,0 +1,42 @@
+@CHARSET "ISO-8859-1";
+
+.left-container{
+	width: 58% ; 
+	background-color: #E8D2E8;  
+	float :left ; 
+	padding-right: 2px; 
+}
+
+.container-status{
+	width: 100%; 
+	background-color: #F8FAF6 ; 
+	float: left;  
+	position: relative; 
+	top: 2px; 
+	border: 1px solid #DDE682; 
+	margin-top :2px; 
+}
+
+.area-input-status{
+	width: 100% ; 
+	background-color: #FBA1A6; 
+}
+
+.area-status{
+	position: relative ; 
+	float :left ; 
+	width: 50%;
+}
+
+.area-button-status{
+	position :relative; 
+	float: right; 
+	width: 50%;
+}
+
+.right-container{
+	width: 30% ; 
+	float : left ; 
+	margin-left:10px ; 
+	z-index: -1
+}

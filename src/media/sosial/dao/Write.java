@@ -66,7 +66,6 @@ public class Write {
 		
 		detail.setAttribute("text" , content); 
 		
-		
 		artikel_baru.appendChild(detail); 
 		el.appendChild(artikel_baru);  
 		
