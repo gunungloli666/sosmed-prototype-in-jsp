@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import media.sosial.dao.Article;
-import media.sosial.dao.ViewArticle;
+import media.sosial.dao.xml.Article;
+import media.sosial.dao.xml.ViewArticle;
 
 public class SearchArticleAction extends HttpServlet{ 
 	
@@ -22,12 +22,10 @@ public class SearchArticleAction extends HttpServlet{
 	
 	public void doPost(HttpServletRequest request , HttpServletResponse response){
 		String keyword = request.getParameter("keyword").trim() ;  	
-//		System.out.println(keyword); 
 		try{
 			List<Article> list = viewArticle.getArticleMatched(keyword ); 
 			Gson gson  = new Gson(); 
 			String str = gson.toJson( list ); 
-//			System.out.println(str); 
 			PrintWriter out = response.getWriter(); 
 			out.write(str);  
 			out.close();

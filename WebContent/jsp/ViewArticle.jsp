@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<%@page import="media.sosial.dao.Article , java.util.List " %>
+<%@page import="media.sosial.dao.xml.Article, java.util.List " %>
 
 <html>
 <head>
@@ -33,28 +33,21 @@ $(document).ready(
 			cache : false , 
 			success : function( response){
 				 $("#statusArea").prepend("<div  class=\"container-status\" id=\""
-					+response+"\"><div class=\"area-status\" >"+sts+"</div>"+
-					"<div align=\"right\" class=\"area-button-status\" ><button class=\"buttonHapus\" value=\""+
+					+response+"\"><div class=\"area-status  area-update-status\" >"+sts+"</div>"+
+					"<div align=\"right\" class=\"area-button-status\" ><button class=\"buttonEdit\" value=\""+response+
+					"\" >EDIT</button> <button class=\"buttonHapus\" value=\""+
 					response+"\">HAPUS</button></div>" +
 					"</div>" );
 				 $("#updateArea").val("");
-				 $(".buttonHapus").click( function(){
-					var idx = $(this).val(); 
-					$.ajax({
-						url : 'hapusArticle', 
-						data : {idArticle : idx  } ,
-						type : 'post', 
-						cache : false, 
-						success : function( response){
-							$("#" + idx ).remove(); 
-						}
-					}); 
-				}); 
+				 $(".buttonEdit").click(editClick);  
+				 $(".buttonHapus").click(hapusClick); 
 			}	
 		}); 
 	}); 
 	
-	$(".buttonHapus").click( function(){
+	$(".buttonHapus").click( hapusClick ); 
+	
+	function hapusClick(){
 		var idx = $(this).val(); 
 		$.ajax({
 			url : 'hapusArticle', 
@@ -65,7 +58,35 @@ $(document).ready(
 				$("#" + idx ).remove(); 
 			}
 		}); 
-	}); 
+	}	
+	
+	 function editClick () {
+		var idx = $(this).val(); 
+		var areaStatus = $("#" + idx + " .area-update-status" ); 
+		var text = areaStatus.text();
+		areaStatus.text("");
+		var area = "<textarea class=\"area-update\" style=\"width: 99%;\" rows=\"2\" cols=\"60\" >"
+			+text+"</textarea>"; 
+		areaStatus.append(area).append("<button class=\"buttonDone\" >DONE</button>"); 
+		$(".buttonDone").click(function(){
+			var gg = $("#"+ idx + " .area-update").val(); 
+			$.ajax({
+				url : 'editArticle', 
+				data : {idArticle : idx , contentArticle: gg  } ,
+				type : 'post', 
+				cache : false, 
+				success : function( response){
+					areaStatus.text(gg); 
+					$(this).remove(); 
+					area.remove();
+				}
+			}); 
+			
+		}); 
+		
+	}
+	
+	$(".buttonEdit").click(editClick);  
 	
 	$("#autoComplete").on("change keyup paste" , function (){
 		var text = $(this).val(); 
@@ -109,7 +130,7 @@ $(document).ready(
 
 
 <%
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 List<Article> listArticle =(List<Article>)  request.getAttribute("listArticle" ) ; 
 %>
 <div>
@@ -135,15 +156,15 @@ List<Article> listArticle =(List<Article>)  request.getAttribute("listArticle" )
 	
 	<div id="statusArea">
 		<%
-			for(int i= listArticle.size() - 1; i>=0 ; i-- ){
+			for(int i= listArticle.size() - 1 ; i>=0 ; i-- ){
 				Article art = listArticle.get(i); 
 		%>
 		<div class="container-status"  id="<%=art.getTitle()%>" >
-			<div class="area-status" ><%=art.getContent()%></div>
+			<div class="area-status area-update-status"><%=art.getContent()%></div>
 			<div align="right" class="area-button-status"  >
+				<button class="buttonEdit" value="<%=art.getTitle()%>" >EDIT</button>
 				<button class="buttonHapus"  value="<%=art.getTitle()%>" >HAPUS</button>
 			</div>
-			
 		</div>
 		<%
 			}
@@ -154,13 +175,10 @@ List<Article> listArticle =(List<Article>)  request.getAttribute("listArticle" )
 </div>
 
 <div class="right-container"  >
-	<input style="width:100" id="autoComplete" >
+	<input style="width:100"  id="autoComplete" >
 	<div id="divAutocomplete" >
 	</div>
 		
-	<div id="kotakPesan"  style="position: absolute; top:  12em ">
-	<div>Daftar Pesan</div>
-	</div>
 </div>
 
 

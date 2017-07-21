@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import media.sosial.dao.Article;
-import media.sosial.dao.ViewArticle;
+import media.sosial.dao.xml.Article;
+import media.sosial.dao.xml.ViewArticle;
 
 public class ViewArticleAction  extends HttpServlet{ 
 	
@@ -24,7 +24,8 @@ public class ViewArticleAction  extends HttpServlet{
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response){
 		try{
-			List<Article > listArticle = viewArticle.getAllArticle(); 
+			@SuppressWarnings("rawtypes")
+			List listArticle = viewArticle.getAllArticle(); 
 			request.setAttribute("listArticle", listArticle ); 
 			RequestDispatcher rd = request.getRequestDispatcher("/jsp/ViewArticle.jsp" );
 			rd.forward(request, response);  

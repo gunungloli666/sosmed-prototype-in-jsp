@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import media.sosial.dao.DeleteArticle;
+import media.sosial.dao.xml.DeleteArticle;
 
 public class HapusArticleAction extends HttpServlet{ 
 	

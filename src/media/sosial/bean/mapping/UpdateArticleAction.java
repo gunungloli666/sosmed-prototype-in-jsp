@@ -13,28 +13,32 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import media.sosial.dao.Schedule;
-import media.sosial.dao.Write;
+import media.sosial.dao.xml.ModifyArticle;
+import media.sosial.dao.xml.Schedule;
+import media.sosial.dao.xml.Write;
 
 public class UpdateArticleAction extends HttpServlet {
 
 	private Write writer;
+	
+	private ModifyArticle modifyArticle; 
 
 	public UpdateArticleAction() {
 		writer = Write.getNewInstance();
+		modifyArticle = ModifyArticle.getInstance(); 
 	}
 	
 	private final Thread generator = new Thread(new Runnable() {
 		@Override
 		public void run() {
-			while(!Thread.currentThread().isInterrupted()){
-				try{
-					Thread.sleep(1000); 
-					System.out.println(Thread.currentThread().getName()); 
-				}catch(Exception e){
-					
-				}
-			}
+//			while(!Thread.currentThread().isInterrupted()){
+//				try{
+//					Thread.sleep(1000); 
+//					System.out.println(Thread.currentThread().getName()); 
+//				}catch(Exception e){
+//					
+//				}
+//			}
 		}
 	}); 
 	
@@ -46,8 +50,8 @@ public class UpdateArticleAction extends HttpServlet {
 	}
 	
 	public void init() throws ServletException{
-		System.out.println("servlet update status started"); 
-		generator.start(); 
+//		System.out.println("servlet update status started"); 
+//		generator.start(); 
 	}
 	
 	public void destroy(){
@@ -61,10 +65,15 @@ public class UpdateArticleAction extends HttpServlet {
 
 	// tambahin passing list ke dalam servlet
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("name thread: " +  Thread.currentThread().getName()); 
-		if(generator != null){
-			System.out.println("miss: " + generator.getName()); 
-		}
+
+		contentUpdate(request, response);
+	}
+	
+	public void contentUpdate(HttpServletRequest request  , HttpServletResponse response ) {
+//		System.out.println("name thread: " +  Thread.currentThread().getName()); 
+//		if(generator != null){
+//			System.out.println("miss: " + generator.getName()); 
+//		}
 		try {
 			String content = request.getParameter("content"); 
 			if(content.contains("fuck")){
@@ -83,6 +92,7 @@ public class UpdateArticleAction extends HttpServlet {
 			System.out.println("eror");
 			e.printStackTrace();
 		}
+
 	}
 
 }

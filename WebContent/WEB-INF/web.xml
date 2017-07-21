@@ -31,6 +31,11 @@
   	<servlet-class>media.sosial.bean.mapping.CekPesanAction</servlet-class>
   </servlet>
   
+   <servlet>
+  	<servlet-name>editArticle</servlet-name>
+  	<servlet-class>media.sosial.bean.mapping.EditArticleAction</servlet-class>
+  </servlet>
+  
   
   <servlet-mapping>
   	<servlet-name>viewArticle</servlet-name> 
@@ -55,6 +60,11 @@
   <servlet-mapping>
   	<servlet-name>cekPesan</servlet-name>
   	<url-pattern>/cekPesan</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>editArticle</servlet-name>
+  	<url-pattern>/editArticle</url-pattern>
   </servlet-mapping>
   
   
