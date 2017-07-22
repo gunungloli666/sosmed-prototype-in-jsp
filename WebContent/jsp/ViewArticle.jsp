@@ -21,7 +21,7 @@ $(document).ready(
   function(){
 	$('#updateButton').click(function(){
 		var status = $('#updateArea').val() ; 
-		var rgx = /\n/g;  
+		var rgx = /\n+/g;  
 		var sts = status.replace(rgx , "<br />" ); 
 		if( !sts){
 			return; 
@@ -63,20 +63,27 @@ $(document).ready(
 	 function editClick () {
 		var idx = $(this).val(); 
 		var areaStatus = $("#" + idx + " .area-update-status" ); 
-		var text = areaStatus.text();
+		var text = areaStatus.html();
+		console.log(text);
+		var regex1 = /<br\s*[\/]?>/g;
+	 	var text1 = text.replace(regex1, "\n");
+	 	console.log(text1); 
 		areaStatus.text("");
 		var area = "<textarea class=\"area-update\" style=\"width: 99%;\" rows=\"2\" cols=\"60\" >"
-			+text+"</textarea>"; 
+			+text1+"</textarea>"; 
 		areaStatus.append(area).append("<button class=\"buttonDone\" >DONE</button>"); 
 		$(".buttonDone").click(function(){
 			var gg = $("#"+ idx + " .area-update").val(); 
+			var reg2 = /\n+/g;  ; 
+			var gg1 = gg.replace(reg2, "<br />"); 
+			console.log("makan: " + gg1); 
 			$.ajax({
 				url : 'editArticle', 
 				data : {idArticle : idx , contentArticle: gg  } ,
 				type : 'post', 
 				cache : false, 
 				success : function( response){
-					areaStatus.text(gg); 
+					areaStatus.html(gg1); 
 					$(this).remove(); 
 					area.remove();
 				}
