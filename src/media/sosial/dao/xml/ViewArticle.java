@@ -10,6 +10,7 @@ import java.util.Properties;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -118,8 +119,37 @@ public class ViewArticle {
 	}
 	
 	public String getArticleById( String id) throws Exception { 
+		URL url = new URL(CommonName.URL);  
+		URLConnection ucon = url.openConnection(); 
+		Properties prop = new Properties(); 
 		
-		return ""; 
+		prop.load(ucon.getInputStream()); 
+		String articlepath = prop.getProperty( CommonName.ARTICLE_PATH ) ;
+		
+		DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance(); 
+		DocumentBuilder dbuild = dbfac.newDocumentBuilder(); 
+		Document doc = dbuild.parse(new FileInputStream(articlepath)); 
+		
+		NodeList nodelist = doc.getElementsByTagName(CommonName.LIST_ARTICLE_TAG) ; 
+		Node list1 = nodelist.item(0); 
+		
+		NodeList nl1 = list1.getChildNodes(); 
+		for(int i =0 ; i < nl1.getLength(); i++){
+			Node n2 = nl1.item(i);
+			if(n2.getNodeName().equals("article")){
+				NamedNodeMap nnp = n2.getAttributes(); 
+				String idx = nnp.getNamedItem(CommonName.ARTICLE_ID).getNodeValue();
+				if(id.equals(idx)) {
+			     	NodeList nl2 = n2.getChildNodes(); 
+			     	Node n22 = nl2.item(1); 
+			     	NamedNodeMap nnp2 = n22.getAttributes(); 
+			     	String content = nnp2.getNamedItem("text").getNodeValue(); 
+					return content;
+				}
+			}
+			
+		}
+		return "" ; 
 	}
 	
 	

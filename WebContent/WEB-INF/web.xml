@@ -35,6 +35,11 @@
   	<servlet-name>editArticle</servlet-name>
   	<servlet-class>media.sosial.bean.mapping.EditArticleAction</servlet-class>
   </servlet>
+
+   <servlet>
+  	<servlet-name>viewById</servlet-name>  
+    <servlet-class>media.sosial.bean.mapping.ViewArticleByIdAction</servlet-class>
+   </servlet>
   
   
   <servlet-mapping>
@@ -65,6 +70,11 @@
   <servlet-mapping>
   	<servlet-name>editArticle</servlet-name>
   	<url-pattern>/editArticle</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>viewById</servlet-name>
+  	<url-pattern>/viewById</url-pattern>
   </servlet-mapping>
   
   

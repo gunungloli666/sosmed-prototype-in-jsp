@@ -17,13 +17,15 @@ String path = request.getContextPath();
 <link rel="stylesheet" href="<%=path%>/css/main.css" type="text/css" >
 
 <script type="text/javascript"> 
+
+
 $(document).ready(
   function(){
 	$('#updateButton').click(function(){
 		var status = $('#updateArea').val() ; 
-		var rgx = /\n+/g;  
+		var rgx = /\n/g;  
 		var sts = status.replace(rgx , "<br />" ); 
-		if( !sts){
+		if( ! sts ){
 			return; 
 		}
 		$.ajax({
@@ -62,37 +64,39 @@ $(document).ready(
 	
 	 function editClick () {
 		var idx = $(this).val(); 
+		$("#"+idx).find(".area-update-status").find(".area-update").remove() ; 
+		$("#"+idx).find(".area-update-status").find(".buttonDone").remove(); 
 		var areaStatus = $("#" + idx + " .area-update-status" ); 
-		var text = areaStatus.html();
-		console.log(text);
-		var regex1 = /<br\s*[\/]?>/g;
-	 	var text1 = text.replace(regex1, "\n");
-	 	console.log(text1); 
-		areaStatus.text("");
-		var area = "<textarea class=\"area-update\" style=\"width: 99%;\" rows=\"2\" cols=\"60\" >"
-			+text1+"</textarea>"; 
-		areaStatus.append(area).append("<button class=\"buttonDone\" >DONE</button>"); 
-		$(".buttonDone").click(function(){
-			var gg = $("#"+ idx + " .area-update").val(); 
-			var reg2 = /\n+/g;  ; 
-			var gg1 = gg.replace(reg2, "<br />"); 
-			console.log("makan: " + gg1); 
-			$.ajax({
-				url : 'editArticle', 
-				data : {idArticle : idx , contentArticle: gg  } ,
-				type : 'post', 
-				cache : false, 
-				success : function( response){
-					areaStatus.html(gg1); 
-					$(this).remove(); 
-					area.remove();
-				}
-			}); 
-			
-		}); 
-		
+		areaStatus.html("");
+		var button1 = "<button class=\"buttonDone\" >DONE</button>"; 
+		var area = "<textarea class=\"area-update\" style=\"width: 99%;\" rows=\"6\" cols=\"60\" >"; 
+		$.ajax({
+			url : 'viewById' , 
+			data : { idArticle : idx } , 
+			type : 'post', 
+			cache : false, 
+			success : function(response){
+				area = area + response +"</textarea><button class=\"buttonDone\">DONE</button>"
+				areaStatus.html(area); 
+				$("#" + idx + " .buttonDone").click( function(){
+					var m = areaStatus.find(".area-update");
+					var gg = m.val(); 
+					var reg2 = /\n/g;
+					var gg1 = gg.replace(reg2, "<br />"); 
+					$.ajax({
+						url : 'editArticle', 
+						data : { idArticle : idx , contentArticle: gg  } ,
+						type : 'post', 
+						cache : false, 
+						success : function( response){
+			 				areaStatus.html(gg1); 
+						}
+					}); 	
+				}); 
+			} 
+		});
 	}
-	
+	 
 	$(".buttonEdit").click(editClick);  
 	
 	$("#autoComplete").on("change keyup paste" , function (){
@@ -112,6 +116,14 @@ $(document).ready(
 			}
 		});
 	}); 
+	
+	
+	function removeGarbage(){
+		var dd = $(".area-update-status");
+		$.each(dd, function(ind ,con){
+			con.remove();
+		});
+	}
 	
 	// 	function cekPesan( ){
 	// 		$.ajax({
